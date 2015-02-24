@@ -126,18 +126,14 @@ public class BooheeScrollView extends HorizontalScrollView{
     }
 
     private void onMoveEvent(float dx, float dy){
-        moveContent((int)-dx);
-    }
-
-    private void moveContent(int dx){
-        scrollBy(dx, 0);
+        scrollTo(mCurrentScrollX-(int)dx, 0);
     }
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         mCurrentScrollX = l;
-        mCurrentScrollXEnd = mCurrentScrollX + mWidth;
+        mCurrentScrollXEnd = l + mWidth;
         setVisibleChildRotation();
     }
 
@@ -163,6 +159,9 @@ public class BooheeScrollView extends HorizontalScrollView{
                 rotation = (((viewLeft +viewRight)/2 - scrollViewCenterX) *10 / (float)mWidth)*1.5f;
                 mChildViews[i].setRotation(rotation);
                 mChildViews[i].setTranslationY(Math.abs(rotation * 3));
+                /**
+                 * 找出处于屏幕中间的view
+                 * */
                 if(!(viewLeft <= windowCenterX && viewRight >= windowCenterX)){
                     continue;
                 }
@@ -223,10 +222,6 @@ public class BooheeScrollView extends HorizontalScrollView{
             return ;
         }
 
-        if(ANIM_TYPE == REBOUND_ANIM){
-            mSpring.setVelocity(Math.abs(initialVelocity));
-        }
-
         if(initialVelocity>0){
             if(centerViewIndex>=2){
                 dstScrollX = mChildViews[centerViewIndex-1].getLeft() + mChildViews[centerViewIndex-1].getWidth()/2 - mWidth/2;
@@ -277,11 +272,9 @@ public class BooheeScrollView extends HorizontalScrollView{
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                final float x = ev.getX();
-                final float y = ev.getY();
-                final float dx= x - mLastMotionX;
-                final float dy= y - mLastMotionY;
-                if(checkTouchSlop(dx, dy)){
+                float x = ev.getX();
+                float y = ev.getY();
+                if(checkTouchSlop(x - mLastMotionX, y - mLastMotionY)){
                     mIsDragging = true;
                     mLastMotionX = x;
                     mLastMotionY = y;
@@ -301,13 +294,11 @@ public class BooheeScrollView extends HorizontalScrollView{
 
         switch(ev.getAction()){
             case MotionEvent.ACTION_MOVE:
-                final float x = ev.getX();
-                final float y = ev.getY();
-                final float dx= x - mLastMotionX;
-                final float dy= y - mLastMotionY;
+                float x = ev.getX();
+                float y = ev.getY();
+                onMoveEvent(x - mLastMotionX, y - mLastMotionY);
                 mLastMotionX = x;
                 mLastMotionY = y;
-                onMoveEvent(dx, dy);
                 break;
             case MotionEvent.ACTION_UP:
                 mIsDragging = false;
@@ -321,6 +312,7 @@ public class BooheeScrollView extends HorizontalScrollView{
         mChildViews = views;
         childCount = mChildViews.length;
     }
+
     private int dx;
     Property<BooheeScrollView, Integer> scrollAnim = new Property<BooheeScrollView, Integer>(Integer.class, "mCurrentScrollX"){
         @Override
@@ -330,7 +322,7 @@ public class BooheeScrollView extends HorizontalScrollView{
 
         @Override
         public void set(BooheeScrollView object, Integer value) {
-            scrollBy(value - mCurrentScrollX, 0);
+            scrollTo(value, 0);
         }
     };
 
