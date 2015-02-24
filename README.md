@@ -1,6 +1,6 @@
 # BooheeScrollView
 
-模仿薄荷食物图书馆效果的一个小demo
+模仿薄荷食物图书馆效果
 
 # ScreenShot
 
