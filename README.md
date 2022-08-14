@@ -9,7 +9,7 @@
 
 
 # Usage
-###step 1
+### step 1
     在布局文件里实现类似布局
     
     <com.zzt.library.BooheeScrollView
@@ -26,7 +26,7 @@
         </com.zzt.library.BuildLayerLinearLayout>
     </com.zzt.library.BooheeScrollView>
     
-###step 2
+### step 2
     根据合适的大小创建出要显示的内容 并添加到 buildLayerLinearLayout中
         BezelImageView imageView2 = new BezelImageView(this);
         imageView2.setLayoutParams(new LinearLayout.LayoutParams(width, height));
