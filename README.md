@@ -33,7 +33,7 @@
         buildLayerLinearLayout.addView(imageView2);
         imageView2.setImageBitmap(decodeSampledBitmapFromResource(getResources(),  R.drawable.pic2, width, height));
         imageView2.setMaskDrawable(getResources().getDrawable(R.drawable.roundrect));
-###step 3
+### step 3
     将要旋转的内容添加到这里
     booheeScrollView.setChildViews(new View[]{
         cardView1, imageView1,imageView2, imageView3,
